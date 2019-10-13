@@ -1,12 +1,14 @@
 package com;
 
+import java.util.stream.IntStream;
+
 public class Word
 {
 	private final String word;
 
-	private double wordLength;
+	private int wordLength;
 
-	private double numberOfVowels;
+	private int numberOfVowels;
 
 	private int percentOfVowels;
 
@@ -17,16 +19,21 @@ public class Word
 
 	private void countVowels()
 	{
-		int counter = 0;
+		long counter = IntStream
+			.range(0, wordLength)
+			.mapToObj(index -> Character.toString(word.charAt(index)))
+			.filter(s -> s.matches("[aeiouy]"))
+			.count();
 
-		for (int i = 0; i < wordLength; i++)
+		/*for (int i = 0; i < wordLength; i++)
 		{
 			if (Character.toString(word.charAt(i)).matches("[aeiouy]"))
 			{
 				++counter;
 			}
-		}
-		this.numberOfVowels = counter;
+		}*/
+
+		this.numberOfVowels = (int)counter;
 	}
 
 	public Word setWord()
@@ -44,7 +51,7 @@ public class Word
 
 	private void countPercentOfVowels()
 	{
-		this.percentOfVowels = (int)((this.numberOfVowels / this.wordLength) * 100);
+		this.percentOfVowels = (int)(((double)this.numberOfVowels / (double)this.wordLength) * 100);
 	}
 
 	public int getPercentOfVowels()
